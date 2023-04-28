@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+
+{%block content%}
+<div class="container">
+    <div class="col-md-6 mx-auto my-5">
+        <form action="/login" method="POST">
+            <h1 class="text-center">Login</h1><br>
+            {%csrf_token%}
+              <div class="form-floating">
+                <input required type="text" name="mobile" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Mobile Number</label>
+              </div>
+              <br>
+              <div class="form-floating">
+                <input required type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+              </div>
+              <br>
+              <small>Don't have an account? <a href="/signin"><strong>Signin</strong></a></small>
+              <br><br>
+              <button class="btn btn-primary" type="submit">Submit</button>
+        
+        </form>
+    </div>
+</div>
+{%endblock%}

@@ -1,0 +1,29 @@
+{%extends 'base.html' %}
+{% load humanize %}
+
+{%block title%}Product{%endblock%}
+{%block content%}
+{%if product%}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-sm-6 text-center align self-center">
+            <img src="{{product.image.url}}" class="img-fluid img-thumbnail rounded-start" alt="...">
+        </div>
+         <div class="col-sm-5 offset-sm-1">
+            <h1>{{product.product_name}}</h1>
+            <hr>
+              <p class="card-text">{{product.description}}</p>
+              <p class="card-text"><small class="text-body-secondary">Rs.{{product.price|intcomma}}</small></p>
+              {%if request.session.is_authenticated%}
+              {%if item_in_cart %}
+               <a href="/cart_to" class="btn btn-primary">Go to Cart</a>
+              {%else%}
+              <a href="{%url 'cart' product.id %}" class="btn btn-primary">Add To Cart</a>  
+              {%endif%}
+              {%endif%}
+            </div>
+    </div>
+    
+</div>
+{%endif%}
+{%endblock%}

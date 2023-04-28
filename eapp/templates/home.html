@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+{% load humanize %}
+{%block content%}
+<h1 class="text-center my-5">Products</h1>
+{%if products%}
+
+<div class="container">
+  <div class="row">
+   <div class="col-lg-3 mb-5">
+      {%if categories %}
+      <ul class="list-group d-none d-lg-block">
+          <li class="list-group-item"><a href="/" class="text-decoration-none">All Product</a></li>
+       
+        {%for category in categories%}
+            <li class="list-group-item"><a href="/?category={{category.id}}" class="text-decoration-none">{{category.name}}</a></li> 
+            {%endfor%}
+      </ul>
+      <div class="dropdown d-lg-none">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Categories
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="/" class="dropdown-item">All Product</a</li>
+            {%for category in categories%}
+            <li><a href="/?category={{category.id}}" class="dropdown-item">{{category.name}}</a></li> 
+            {%endfor%}
+          
+        </ul>
+      </div>
+      {%endif%}
+   </div>
+
+   <div class="col-lg-9">
+    <div class="row mx-auto">
+      {%for product in products%}
+      <div class="card mx-auto" style="width: 18rem;">
+        <a href="{%url 'productdetail' product.id %}">
+        <img src="{{product.image.url}}" class="card-img-top product-img" alt="...">
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">{{product.product_name}}</h5>
+          <p class="card-text">Rs.{{product.price|intcomma}}</p>
+        </div>
+      </div>
+      {%endfor%} 
+    </div>
+  </div>
+  </div>
+</div>
+
+{%endif%}
+{%endblock%}

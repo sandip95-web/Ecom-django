@@ -1,0 +1,30 @@
+{%extends 'base.html' %}
+
+{%block content %}
+<br><br><br>
+<div class="container w-50">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Full name</label>
+            <input  required type="email" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          </div>
+          <br>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input required type="email" name="'email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Mobile number</label>
+          <input required type="number" name="mobile" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <br>
+        <div class="form-group d-flex flex-column">
+            <label for="exampleInputEmail1">Message</label>
+            <textarea required name="message" id="" cols="30" rows="10"></textarea>
+          </div>
+          <br>  
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div>
+{%endblock%}

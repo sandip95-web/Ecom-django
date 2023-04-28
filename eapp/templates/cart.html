@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{%block title %}Cart{%endblock%}
+{%block content%}
+<div class="container">
+    {%if cart %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Image</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+          <th scope="col">Total Price</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+          {%for cart in cart %}
+          
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td><img style="height:80px" src="{{cart.product.image.url}}" alt=""></td>
+          <td>{{cart.product}}</td>
+          <td>{{cart.quantity}}</td>
+          <td>{{cart.price}}</td>
+          <td>{{cart.total}}</td>
+          <td>
+            <form action="/minus_cart" method="GET">
+              {%csrf_token%}
+              <input type="hidden" name="product_id" value="{{cart.product.id}}">
+              <input type="submit" class="btn btn-primary" value="-">
+            </form>
+          </td>
+          </td>
+          <td><span id="quantity">{{cart.quantity}}</span></td>
+          <td>
+            <form action="/plus_cart" method="GET">
+              {%csrf_token%}
+              <input type="hidden" name="product_id" value="{{cart.product.id}}">
+              <input type="submit" class="btn btn-primary" value="+">
+            </form>
+          </td>
+          
+         <td>
+          <form action="/remove_cart" method="GET">
+            {%csrf_token%}
+            <input type="hidden" name="product_id" value="{{cart.product.id}}">
+            <input type="submit" class="btn btn-danger" value="Delete">
+          </form>
+         </td>  
+      </tr>
+      {%endfor%}
+      </tbody>
+    </table>
+    <br>
+    <hr>
+    <h1>TOTAL: Rs.{{alltotal}}</h1>
+    <a href="/" class="btn btn-primary">Payment</a>
+    {%else%}
+    <h1 class="my-5 mx-auto">Cart Is Empty</h1>
+    {%endif%}
+     
+</div>
+<!-- <script>
+  $('.plus-cart').click (function(){
+    var id=$(this).attr("pid").toString();
+
+    $.ajax({
+      type:"Get",
+      
+      url:"/plus_cart",
+      data:{
+        prod_id:id
+      },
+      success:function(data){
+        $('#quantity').text(data.quantity);
+      }
+
+    })
+  })
+
+
+  $('.minus-cart').click (function(){
+    var id=$(this).attr("pid").toString();
+
+    $.ajax({
+      type:"Get",
+      
+      url:"/minus_cart",
+      data:{
+        prod_id:id
+      },
+      success:function(data){
+        $('#quantity').text(data.quantity);
+      }
+
+    })
+  })
+
+  $('.remove-cart').click (function(){
+    var id=$(this).attr("pid").toString();
+
+    $.ajax({
+      type:"get",
+      
+      url:"/remove_cart",
+      data:{
+        prod_id:id
+      },
+      success:function(d){
+        $(mythis).closest("tr").fadeOut();
+      }
+
+    })
+  })
+  
+</script> -->
+{%endblock%}

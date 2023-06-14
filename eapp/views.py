@@ -1,9 +1,8 @@
 from django.shortcuts import render,redirect,HttpResponse
-from . models import Product,Category,Cart
+from . models import Product,Category,Cart,Contact
 from django.contrib import messages
 from . models import Customer_account
-from django.http import JsonResponse
-
+from . form import AddProduct,AddCategory
 # Create your views here.
 def home(request):
     if request.session.get('is_authenticated',False):
@@ -23,6 +22,16 @@ def about(request):
     return render(request,'about.html')
 
 def contact(request):
+    if request.method=="POST":
+        name=request.POST.get('name')
+        email=request.POST.get('email')
+        mobile=request.POST.get('mobile')
+        message=request.POST.get('message')
+        mail=Contact(full_name=name,email=email,mobile=mobile,message=message)
+        mail.save()
+        messages.success(request,"We will be in touch with you soon")
+        return redirect('home')
+        
     return render(request,'contact.html')
 def signin(request):
     if request.method=="POST":
@@ -90,24 +99,21 @@ def add_to_cart(request,pk):
 
 def cart(request):
     totalprice=0
-    alltotal=0
+    
     if request.session.get('is_authenticated',False):
         phone=request.session['phone']
-        totalitem=len(Cart.objects.filter(phone=phone))
-        allcart=Cart.objects.all()
-        for i in allcart:
-            alltotal+=i.total
         customer=Customer_account.objects.filter(mobile_number=phone)
-        
+        alltotal=0        
         for i in customer:
             name=i.full_name
             cart=Cart.objects.filter(phone=phone)
             for c in cart:
                 if(c.quantity==0):
-                    c.total=0
+                    c.total=c.price
                 else:
                     c.total=c.price * c.quantity
                 c.save()
+                alltotal+=c.total
             return render(request,'cart.html',{'cart':cart,'name':name,'alltotal':alltotal})
     else:
         messages.warning(request,"You must Be Logged In To view this page")
@@ -131,7 +137,7 @@ def minus_cart(request):
         phone=request.session['phone']
         product_id=request.GET.get('product_id')
         cart=Cart.objects.get(phone=phone,product=product_id)
-        if(cart.quantity>0):
+        if(cart.quantity>1):
                cart.quantity-=1
         
         
@@ -145,3 +151,49 @@ def remove_cart(request):
         cart=Cart.objects.get(phone=phone,product=product_id)   
         cart.delete()
         return redirect('cart_to')
+
+def clear_cart(request):
+    if request.session.get('is_authenticated',False):
+        phone=request.session['phone']
+        cart=Cart.objects.filter(phone=phone)
+        cart.delete()
+        return redirect('cart_to')   
+        
+def add_product(request):
+     if request.session.get('is_authenticated',False):
+         phone=request.session['phone']
+         if(phone=='9818504980'):
+            form=AddProduct()
+            if request.method=="POST":
+                form=AddProduct(request.POST,request.FILES)
+                
+                if form.is_valid():
+                    form.save()
+                    messages.success(request,"Product added")
+                    return redirect('home')
+            return render(request,'addproduct.html',{'form':form})
+         else:
+            messages.warning(request,"You must be Logged in as Admin to view this Page")
+            return redirect('home')
+def add_category(request):
+    if request.session.get('is_authenticated',False):
+        form=AddCategory(request.POST or None)
+        if request.method=="POST":
+            if form.is_valid():
+                form.save()
+                messages.success(request,"Category added")
+                return redirect('home')
+        else:
+            return render(request,"category.html",{'form':form})
+    else:
+        messages.warning(request,"You must be Logged in as Admin to view this Page")
+        return redirect('home')
+    
+def payment(request):
+    if request.session.get('is_authenticated',False):
+        return render(request,"payment.html")
+        
+    else:
+      messages.warning(request,"You must be Logged in as Admin to view this Page")
+      return redirect('home')
+    

@@ -56,64 +56,14 @@
     <br>
     <hr>
     <h1>TOTAL: Rs.{{alltotal}}</h1>
-    <a href="/" class="btn btn-primary">Payment</a>
+    <div class="box d-flex justify-content-between">
+      <a href="{%url 'payment' %}" class="btn btn-primary" id="payment-button">Payment</a>
+      <a href="/clear_cart" class="btn btn-success">Clear Cart</a>
+    </div>
     {%else%}
     <h1 class="my-5 mx-auto">Cart Is Empty</h1>
     {%endif%}
      
 </div>
-<!-- <script>
-  $('.plus-cart').click (function(){
-    var id=$(this).attr("pid").toString();
 
-    $.ajax({
-      type:"Get",
-      
-      url:"/plus_cart",
-      data:{
-        prod_id:id
-      },
-      success:function(data){
-        $('#quantity').text(data.quantity);
-      }
-
-    })
-  })
-
-
-  $('.minus-cart').click (function(){
-    var id=$(this).attr("pid").toString();
-
-    $.ajax({
-      type:"Get",
-      
-      url:"/minus_cart",
-      data:{
-        prod_id:id
-      },
-      success:function(data){
-        $('#quantity').text(data.quantity);
-      }
-
-    })
-  })
-
-  $('.remove-cart').click (function(){
-    var id=$(this).attr("pid").toString();
-
-    $.ajax({
-      type:"get",
-      
-      url:"/remove_cart",
-      data:{
-        prod_id:id
-      },
-      success:function(d){
-        $(mythis).closest("tr").fadeOut();
-      }
-
-    })
-  })
-  
-</script> -->
 {%endblock%}

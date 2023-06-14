@@ -33,7 +33,7 @@ class Cart(models.Model):
     
 class Contact(models.Model):
     full_name=models.CharField(max_length=20)
-    email=models.EmailField()
+    email=models.TextField()
     mobile=models.IntegerField()
     message=models.TextField()
     
